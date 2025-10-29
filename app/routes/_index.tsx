@@ -1,15 +1,6 @@
-import { useState } from 'react';
-import * as React from 'react';
 import type { MetaFunction } from '@remix-run/node';
 import appConfig from '~/app-config';
 import { GlassmorphismTheme } from '~/themes/Glassmorphism';
-import { ClassicTheme } from '~/themes/Classic';
-import { EnterpriseTheme } from '~/themes/Enterprise';
-import { SoftModernTheme } from '~/themes/SoftModern';
-import { MinimalLightTheme } from '~/themes/MinimalLight';
-import { MinimalDarkTheme } from '~/themes/MinimalDark';
-import { GreenTechTheme } from '~/themes/GreenTech';
-import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 
 export const meta: MetaFunction = () => {
     const homePageData = appConfig.pages?.home;
@@ -19,7 +10,6 @@ export const meta: MetaFunction = () => {
     const ogDescription = homePageData?.og_description || description;
     const ogImage = homePageData?.og_image || appConfig.ogImage;
 
-    // Enhanced keywords for both user project and decimal.tools SEO
     const userKeywords = homePageData?.meta_keywords || appConfig.seoKeywords || '';
     const decimalKeywords = 'decimal.tools, remix website builder, no-code website builder, remix app generator, website builder';
     const keywords = userKeywords ? `${userKeywords}, ${decimalKeywords}` : decimalKeywords;
@@ -57,66 +47,6 @@ export const meta: MetaFunction = () => {
     return metaTags;
 };
 
-/**
- * Theme Middleware
- * Renders the appropriate theme based on appConfig.themeName
- */
-export default function Index(): JSX.Element {
-    // Use state for dev mode theme switching
-    const [currentTheme, setCurrentTheme] = useState(appConfig.themeName || 'Glassmorphism');
-
-    // Check if we're in development mode
-    const isDev = process.env.NODE_ENV === 'development';
-
-    // Theme routing logic
-    const renderTheme = () => {
-        switch (currentTheme) {
-            case 'Classic':
-                return <ClassicTheme config={appConfig} />;
-            case 'Enterprise':
-                return <EnterpriseTheme config={appConfig} />;
-            case 'SoftModern':
-                return <SoftModernTheme config={appConfig} />;
-            case 'MinimalLight':
-                return <MinimalLightTheme config={appConfig} />;
-            case 'MinimalDark':
-                return <MinimalDarkTheme config={appConfig} />;
-            case 'GreenTech':
-                return <GreenTechTheme config={appConfig} />;
-            case 'Glassmorphism':
-            case 'Modern': // Backward compatibility
-            default:
-                return <GlassmorphismTheme config={appConfig} />;
-        }
-    };
-
-    // Apply background styles directly to body based on current theme
-    React.useEffect(() => {
-        const isGlassmorphism = currentTheme === 'Glassmorphism' || currentTheme === 'Modern';
-
-        if (isGlassmorphism) {
-            document.body.style.background = `linear-gradient(135deg, ${appConfig.primaryColor}22 0%, ${(appConfig.secondaryColor || '#ffffff')}33 100%)`;
-            document.body.style.backgroundColor = '#0f0f23';
-        } else {
-            document.body.style.background = '';
-            document.body.style.backgroundColor = '';
-        }
-
-        return () => {
-            document.body.style.background = '';
-            document.body.style.backgroundColor = '';
-        };
-    }, [currentTheme]);
-
-    return (
-        <>
-            {renderTheme()}
-            {isDev && (
-                <ThemeSwitcher
-                    currentTheme={currentTheme}
-                    onThemeChange={setCurrentTheme}
-                />
-            )}
-        </>
-    );
+export default function Index() {
+    return <GlassmorphismTheme config={appConfig} />;
 }
