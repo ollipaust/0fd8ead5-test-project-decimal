@@ -82,7 +82,7 @@ import{invertColor}from'./utils/colors';export interface SiteConfig{themeName?:s
   "secondaryColor":undefined,"pages": {
     "home": {
       "page_name": "home",
-      "page_title": "Home",
+      "page_title": "Home abc",
       "page_description": "Welcome to your new App",
       "sections": [
         {
